@@ -1,0 +1,55 @@
+router core_router {
+    linecard lc1 {
+        type "NCS-1001-LC"
+        ports 4
+        speed 100 Gbps
+        vendor = "Cisco"
+        model = "NCS-1001"
+    }
+    
+    module mod1 {
+        type "NCS-1001-MOD"
+        ports 2
+        speed 400 Gbps
+        vendor = "Cisco"
+        model = "NCS-1001"
+    }
+    
+    optic opt1 {
+        type "QSFP-DD"
+        wavelength 1310 nm
+        power -3 dBm
+        vendor = "Finisar"
+        model = "FTRX-1411M3"
+    }
+}
+
+router edge_router {
+    linecard lc2 {
+        type "NCS-540-LC"
+        ports 8
+        speed 100 Gbps
+        vendor = "Cisco"
+        model = "NCS-540"
+    }
+    
+    optic opt2 {
+        type "QSFP28"
+        wavelength 1310 nm
+        power -2 dBm
+        vendor = "Finisar"
+        model = "FTRX-1411M3"
+    }
+}
+
+constraint power_budget {
+    type "power"
+    expression "power >= -5 && power <= 3"
+    message "Optical power must be between -5 dBm and 3 dBm"
+}
+
+constraint speed_compatibility {
+    type "speed"
+    expression "source.speed >= target.speed"
+    message "Source port speed must be greater than or equal to target port speed"
+} 

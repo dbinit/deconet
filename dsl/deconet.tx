@@ -1,0 +1,74 @@
+// Grammar for DecoNet DSL
+
+// Main entry point
+Config:
+    routers+=Router
+    constraints+=Constraint
+;
+
+// Router definition
+Router:
+    'router' name=ID '{'
+        components+=Component
+    '}'
+;
+
+// Component can be a line card, module, or optic
+Component:
+    LineCard | Module | Optic
+;
+
+// Line card definition
+LineCard:
+    'linecard' name=ID '{'
+        'type' type=STRING
+        'ports' port_count=INT
+        'speed' speed=INT 'Gbps'
+        properties*=Property
+    '}'
+;
+
+// Module definition
+Module:
+    'module' name=ID '{'
+        'type' type=STRING
+        'ports' port_count=INT
+        'speed' speed=INT 'Gbps'
+        properties*=Property
+    '}'
+;
+
+// Optic definition
+Optic:
+    'optic' name=ID '{'
+        'type' type=STRING
+        'wavelength' wavelength=INT 'nm'
+        'power' power=INT 'dBm'
+        properties*=Property
+    '}'
+;
+
+// Property key-value pairs
+Property:
+    key=ID '=' value=Value
+;
+
+// Value can be string, number, or boolean
+Value:
+    STRING | INT | FLOAT | BOOL
+;
+
+// Constraint definition
+Constraint:
+    'constraint' name=ID '{'
+        'type' type=STRING
+        'expression' expression=STRING
+        'message' message=STRING
+    '}'
+;
+
+// Keywords
+keywords:
+    'router' 'linecard' 'module' 'optic' 'type' 'ports' 'speed' 'wavelength' 'power'
+    'constraint' 'expression' 'message'
+; 
